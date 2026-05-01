@@ -1,0 +1,9 @@
+anthropic
+faker
+pandas
+openpyxl
+pymongo
+pyspark
+python-docx
+mysql-connector-python
+numpy
