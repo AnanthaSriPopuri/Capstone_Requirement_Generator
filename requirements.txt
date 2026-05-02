@@ -7,3 +7,4 @@ pyspark
 python-docx
 mysql-connector-python
 numpy
+pyarrow>=15.0.0
