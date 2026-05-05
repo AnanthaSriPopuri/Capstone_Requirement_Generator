@@ -178,12 +178,21 @@ def save_dataset(df, entity_config, sector_name, base_dir="datasets/generated"):
 
     fmt  = entity_config["format"]
     name = entity_config["name"].lower()
-    fp   = os.path.join(path, f"{name}.{fmt}")
+
+    # ── Map format label to correct file extension ────────────────────────────
+    ext_map = {
+        "csv":     "csv",
+        "json":    "json",
+        "excel":   "xlsx",      # ← KEY FIX: "excel" label → ".xlsx" extension
+        "parquet": "parquet",
+    }
+    ext = ext_map.get(fmt, fmt)   # fallback to fmt itself if unknown
+    fp  = os.path.join(path, f"{name}.{ext}")
 
     if   fmt == "csv":     df.to_csv(fp, index=False)
     elif fmt == "json":    df.to_json(fp, orient="records", indent=2)
-    elif fmt == "excel":   df.to_excel(fp, index=False, engine="openpyxl")   # ← FIXED
-    elif fmt == "parquet": df.to_parquet(fp, index=False, engine="pyarrow")  # ← FIXED
+    elif fmt == "excel":   df.to_excel(fp, index=False, engine="openpyxl")
+    elif fmt == "parquet": df.to_parquet(fp, index=False, engine="pyarrow")
     else: raise ValueError(f"Unsupported format: {fmt}")
 
     size_mb = os.path.getsize(fp) / (1024 * 1024)
