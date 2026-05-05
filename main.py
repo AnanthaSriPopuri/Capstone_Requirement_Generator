@@ -59,9 +59,24 @@ def run_single_project(sector_name=None, use_llm=True):
     print("\n[2/4] Calling Claude API ...")
     stories = []
     for p in prompts:
+        # Find this block in run_single_project:
         story = call_llm(p["text"], p["index"]) if use_llm else (
-            f"[Placeholder story {p['index']} for {p['module']} — run without --no-llm for real stories]"
-        )
+    f"USER STORY ID   : US-{p['index']:02d}\n"
+    f"MODULE          : {p['module']}\n"
+    f"ENTITY          : {p['entity']}\n"
+    f"PRIORITY        : Must Have\n\n"
+    f"User Story      : As a data engineer at the organisation, I want to implement "
+    f"{p['module']} operations on the {p['entity']} entity dataset so that data "
+    f"quality, analysis, and business reporting goals are met efficiently.\n\n"
+    f"Acceptance Criteria:\n"
+    f"  AC1: Operation completes without errors on a 90 000-row dataset\n"
+    f"  AC2: Output file is saved to the correct path with expected format\n"
+    f"  AC3: Execution time is within acceptable SLA for the VM environment\n"
+    f"  AC4: All field names from the entity schema are correctly referenced\n\n"
+    f"Solution        : [Set ANTHROPIC_API_KEY environment variable and run "
+    f"without --no-llm flag to generate a complete solution using Claude API]\n\n"
+    f"Any Other Info  : Prompt size was {p['size']:,} characters (limit: {p['limit']:,}).\n"
+)
         stories.append({
             "index":  p["index"],
             "module": p["module"],
